@@ -23,11 +23,6 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetEmployees()
         {
-            int year = DateTime.Now.Year;
-            if(year >= 2022)
-            {
-                return Ok();
-            }
             string query = @"SELECT [EMP_NO]
                             ,[PERS_NO]
                             ,[NAME]

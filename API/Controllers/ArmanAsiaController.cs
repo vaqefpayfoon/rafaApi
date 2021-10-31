@@ -72,7 +72,6 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> GetClockInOut(Between between)
         {
-
             string query = $@"SELECT [STATUS],[EMP_NO],DATEADD(day, -2, CONVERT (datetime,DATE_)) As Date1, TIME_ As Time1,
                             [MODIFY],[Clock_No] FROM [pwkara].[dbo].[DataFile] Where (CONVERT (datetime,DATE_) BETWEEN '{between.FromDate}' and '{between.ToDate}')
                             Order By date1 desc";
