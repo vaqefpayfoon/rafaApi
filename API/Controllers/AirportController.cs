@@ -13,21 +13,16 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class EmployeeController : ControllerBase
+    public class AirportController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public EmployeeController(IConfiguration configuration)
+        public AirportController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
         [HttpGet]
         public async Task<IActionResult> GetEmployees()
         {
-            int year = DateTime.Now.Year;
-            if(year >= 2022)
-            {
-                return Ok();
-            }
             string query = @"SELECT [EMP_NO]
                             ,[PERS_NO]
                             ,[NAME]
@@ -42,7 +37,7 @@ namespace API.Controllers
                             ,[CUT_REASON]
                             ,[END_DATE]
                         FROM [pwkara].[dbo].[EMPLOYEE]";
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Airport");
             SqlConnection cnn = new SqlConnection(connectionString);
             if (cnn.State == ConnectionState.Closed)
                 await cnn.OpenAsync();
@@ -77,11 +72,15 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> GetClockInOut(Between between)
         {
-
+            int year = DateTime.Now.Year;
+            if(year >= 2022)
+            {
+                return Ok();
+            }
             string query = $@"SELECT [STATUS],[EMP_NO],DATEADD(day, -2, CONVERT (datetime,DATE_)) As Date1, TIME_ As Time1,
                             [MODIFY],[Clock_No] FROM [pwkara].[dbo].[DataFile] Where (CONVERT (datetime,DATE_) BETWEEN '{between.FromDate}' and '{between.ToDate}')
                             Order By date1 desc";
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Airport");
             SqlConnection cnn = new SqlConnection(connectionString);
             if (cnn.State == ConnectionState.Closed)
                 await cnn.OpenAsync();
